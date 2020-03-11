@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TodoList from "./TodoList";
 
 export default function App() {
-  const [todos, setTodos] = useState([
-    { id: 1, title: "First todo", completed: false },
-    { id: 2, title: "Second todo", completed: false }
-  ]);
-
+  const [todos, setTodos] = useState([]);
   const [todoTitle, setTodoTitle] = useState("");
+
+  useEffect(() => {
+    const raw = localStorage.getItem("todos") || [];
+    setTodos(JSON.parse(raw));
+  }, []);
+
+  //componentDidMount(){}
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+    return;
+  }, [todos]);
 
   const addTodo = event => {
     if (event.key === "Enter") {
