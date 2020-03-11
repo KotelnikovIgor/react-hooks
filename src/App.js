@@ -1,26 +1,51 @@
-import React, { Component } from 'react'
-import TodoList from './TodoList'
+import React, { useState } from "react";
+import TodoList from "./TodoList";
 
-export default class App extends Component {
-  state = {
-    todos: [
-      {id: 1, title: 'First todo', completed: false},
-      {id: 2, title: 'Second todo', completed: true},
-    ]
-  }
+export default function App() {
+  const [todos, setTodos] = useState([
+    { id: 1, title: "First todo", completed: false },
+    { id: 2, title: "Second todo", completed: false }
+  ]);
 
-  render() {
-    return (
-      <div className="container">
-        <h1>Todo app</h1>
+  const [todoTitle, setTodoTitle] = useState("");
 
-          <div className="input-field">
-            <input type="text" />
-            <label>Todo name</label>
-          </div>
+  const addTodo = event => {
+    if (event.key === "Enter") {
+      setTodos([
+        ...todos,
+        {
+          id: new Date(),
+          title: todoTitle,
+          completed: false
+        }
+      ]);
+      setTodoTitle("");
+    }
+  };
+  // state = {
+  //   todos: [
+  //     {id: 1, title: 'First todo', completed: false},
+  //     {id: 2, title: 'Second todo', completed: true},
+  //   ]
+  // }
 
-          <TodoList todos={this.state.todos} />
+  // render() {
+  return (
+    <div className="container">
+      <h1>Todo app</h1>
+
+      <div className="input-field">
+        <input
+          type="text"
+          value={todoTitle}
+          onChange={event => setTodoTitle(event.target.value)}
+          onKeyPress={addTodo}
+        />
+        <label>Todo name</label>
       </div>
-    );
-  }
+
+      <TodoList todos={todos} />
+    </div>
+  );
+  // }
 }
